@@ -32,15 +32,26 @@ public class MainActivity extends AppCompatActivity {
         EditText etname = findViewById(R.id.etname);
         TextView tv = findViewById(R.id.tv);
         SharedPreferences sharedPreferences = getSharedPreferences("alert", MODE_PRIVATE);
-        tv.setText(sharedPreferences.getString("key", "Hello ###"));
+        tv.setText(sharedPreferences.getString("key", "waiting for input"));
         btn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            String name = etname.getText().toString();
-            editor.putString("key", "Hello "+name);
-            editor.apply();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Wow")
+                    .setMessage("Awesome")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            String name = etname.getText().toString();
+                            editor.putString("key", name);
+                            editor.apply();
+                            Toast.makeText(MainActivity.this,"you wrote " + name, Toast.LENGTH_LONG).show();
 
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
 
 
 
